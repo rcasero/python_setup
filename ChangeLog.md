@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- build_SimpleElastix.sh: Bash script to download and build
+  SimpleElastix.
 - install_keras_environment.sh: Bash script to install the Ubuntu
   packages,python modules and create conda environment for
   environments that use Keras.
