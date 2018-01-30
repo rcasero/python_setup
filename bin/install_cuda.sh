@@ -133,6 +133,22 @@ then
     sudo apt-key add /var/cuda-repo-9-1-local/7fa2af80.pub
     sudo apt-get update
     sudo apt-get install -y cuda
+
+    # add cuda to the path
+    set +e
+    isInBashrc=`grep  -c "export PATH=/usr/local/cuda-9.1/bin" ~/.bashrc`
+    set -e
+    if [ "$isInBashrc" -eq 0 ];
+    then
+	echo "Adding /usr/local/cuda-9.1/bin to PATH in ~/.bashrc"
+	echo "
+# added by pysto/tools/install_cuda.sh
+export PATH=/usr/local/cuda-9.1/bin${PATH:+:${PATH}}" >> ~/.bashrc
+	source ~/.bashrc
+    else
+	echo "/usr/local/cuda-9.1/bin already in PATH in ~/.bashrc"
+    fi
+       
     popd
 else
     echo "** cuda package already installed, skipping"
