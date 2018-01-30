@@ -97,3 +97,5 @@ python setup.py -q install --prefix=$CONDA_PREFIX
 
 # clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
 theano-cache purge
+
+tput setaf 1; echo "** Exiting install_keras_environment.sh"; tput sgr0
