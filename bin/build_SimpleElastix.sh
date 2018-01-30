@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Syntax:
 #
 #     ./build_SimpleElastix.sh pv
@@ -21,6 +19,10 @@
 #     cd ~/Software/SimpleElastix/build_3.6/SimpleITK-build/Wrapping/Python/Packaging
 #     python setup.py install
 
+#!/bin/bash
+
+# exit immediately on errors that are not inside an if test, etc.
+set -e
 
 #################################################################################################
 # syntax
@@ -54,7 +56,7 @@ create_conda_local_environment() {
 
     if [ -z "$(conda info --envs | sed '/^#/ d' | cut -f1 -d ' ' | grep -w ${NAME}_${PYTHON_VERSION})" ]; then
 	tput setaf 1; echo "** Create conda local environment: ${NAME}_${PYTHON_VERSION}"; tput sgr0
-	conda create -y --name ${NAME}_${PYTHON_VERSION} python=${PYTHON_VERSION} || exit 1
+	conda create -y --name ${NAME}_${PYTHON_VERSION} python=${PYTHON_VERSION}
     else
 	tput setaf 1; echo "** Conda local environment already exists (...skipping): ${NAME}_${PYTHON_VERSION}"; tput sgr0
     fi
@@ -142,7 +144,7 @@ fi
 mkdir -p build_${PYTHON_VERSION}
 
 # build for python 3.6
-source activate SimpleElastix_${PYTHON_VERSION} || exit 1
+source activate SimpleElastix_${PYTHON_VERSION}
 cd ~/Software/SimpleElastix/build_${PYTHON_VERSION}
 
 SITK_OPTS="\
@@ -158,5 +160,5 @@ SITK_OPTS="\
 -DITK_BUILD_EXAMPLES:BOOL=OFF \
 -DITK_BUILD_DOCUMENTATION:BOOL=OFF \
 -DSimpleITK_OPENMP:BOOL=ON"
-cmake $SITK_OPTS ../SuperBuild || exit 1
-make -j4 || exit 1
+cmake $SITK_OPTS ../SuperBuild
+make -j4
