@@ -33,11 +33,14 @@ fi
 
 ######################################################################
 
+# directory where this script lives
+THIS_DIR=`dirname $0`
+
 # install Miniconda 3
-./install_miniconda.sh 3
+${THIS_DIR}/install_miniconda.sh 3
 
 # install CUDA toolkit for Ubuntu 17.04 directly from the Nvidia website
-./install_cuda.sh nvidia_ubuntu_17.04
+${THIS_DIR}/install_cuda.sh nvidia_ubuntu_17.04
 
 ######################################################################
 
