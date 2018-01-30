@@ -149,6 +149,5 @@ then
 	mv cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64 cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb
     fi
     sudo dpkg -i cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb
-else
 fi
-   
+
