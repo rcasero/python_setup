@@ -16,7 +16,8 @@
 #
 #      nvidia_ubuntu_16.04: From the Nvidia website, .deb packages for Ubuntu 16.04 (x86_64)
 #
-#      nvidia_ubuntu_17.04: From the Nvidia website, .deb packages for Ubuntu 17.04 (x86_64)
+#      nvidia_ubuntu_17.04: From the Nvidia website, .deb packages for Ubuntu 17.04 (x86_64),
+#                           with Patch 1 (Released Jan 25, 2018)
 #
 #    Note: If you choose an Nvidia website installation, and the cuda
 #      package is already installed, installation is skipped. To
@@ -136,3 +137,18 @@ then
 else
     echo "** cuda package already installed, skipping"
 fi
+
+# install patch to version for Ubuntu 17.04
+if [ "${CUDA_VERSION}" == "cuda-repo-ubuntu1704-9-1-local_9.1.85-1_amd64" ];
+then 
+    echo "** Patching cuda package"
+    pushd ~/Downloads
+    if [ ! -e "cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb" ];
+    then
+	wget https://developer.nvidia.com/compute/cuda/9.1/Prod/patches/1/cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64
+	mv cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64 cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb
+    fi
+    sudo dpkg -i cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb
+else
+fi
+   
