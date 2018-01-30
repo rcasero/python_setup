@@ -126,6 +126,7 @@ then
     if [ ! -e "${CUDA_VERSION}.deb" ];
     then
 	wget https://developer.nvidia.com/compute/cuda/9.1/Prod/local_installers/${CUDA_VERSION}
+	mv ${CUDA_VERSION} ${CUDA_VERSION}.deb
     fi
     sudo dpkg -i ${CUDA_VERSION}.deb
     sudo apt-key add /var/cuda-repo-9-1-local/7fa2af80.pub
