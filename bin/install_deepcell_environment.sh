@@ -39,11 +39,14 @@ set -e
 
 ######################################################################
 
+# directory where this script lives
+THIS_DIR=`dirname $0`
+
 # install Miniconda 3
-./install_miniconda.sh 3
+${THIS_DIR}/install_miniconda.sh 3
 
 # install CUDA toolkit for Ubuntu 17.04 directly from the Nvidia website
-./install_cuda.sh nvidia_ubuntu_17.04
+${THIS_DIR}/install_cuda.sh nvidia_ubuntu_17.04
 
 ######################################################################
 
@@ -53,13 +56,13 @@ tput setaf 1; echo "** Build tools"; tput sgr0
 sudo apt install -y cmake
 
 # for DeepCell
-sudo apt install gcc-5 g++-5
+sudo apt install -y gcc-5 g++-5
 
 # python IDE
 sudo snap install pycharm-community --classic
 
 # install Miniconda 3
-./install_miniconda.sh 3
+${THIS_DIR}/install_miniconda.sh 3
 
 ######################################################################
 
