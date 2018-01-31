@@ -76,6 +76,9 @@ then
     exit 1
 fi
 
+# fix bug: 'To use MKL 2018 with Theano you MUST set "MKL_THREADING_LAYER=GNU" in your environement.'
+export MKL_THREADING_LAYER=GNU
+
 # install Tensorflow, Theano and keras latest version from source
 pip install tensorflow-gpu pyyaml
 pip install git+https://github.com/fchollet/keras.git --upgrade --no-deps

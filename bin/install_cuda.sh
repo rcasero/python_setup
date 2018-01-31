@@ -86,7 +86,6 @@ sudo apt autoremove -y
 set -e
 
 echo
-
 echo "** Install Nvidia website packages"
 
 # check whether package cuda is already installed
@@ -143,7 +142,7 @@ then
 	echo "Adding /usr/local/cuda-9.1/bin to PATH in ~/.bashrc"
 	echo "
 # added by pysto/tools/install_cuda.sh
-export PATH=/usr/local/cuda-9.1/bin${PATH:+:${PATH}}" >> ~/.bashrc
+export PATH=/usr/local/cuda-9.1/bin:\"\$PATH\"" >> ~/.bashrc
 	source ~/.bashrc
     else
 	echo "/usr/local/cuda-9.1/bin already in PATH in ~/.bashrc"
