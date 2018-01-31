@@ -69,6 +69,13 @@ fi
 # switch to the local environment
 source activate $CONDA_ENV
 
+# check that the variable with the path to the local environment is set
+if [[ ! -v CONDA_ENV_PATH ]];
+then
+    echo "Error! Variable CONDA_ENV_PATH not set in this local environment: $CONDA_ENV"
+    exit 1
+fi
+
 # install Tensorflow, Theano and keras latest version from source
 pip install tensorflow-gpu pyyaml
 pip install git+https://github.com/fchollet/keras.git --upgrade --no-deps
@@ -88,12 +95,12 @@ else # no previous version exists
     mkdir Build
 fi
 cd Build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_PREFIX
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_ENV_PATH
 make
 make install
 cd ..
-python setup.py -q build_ext -L $CONDA_PREFIX/lib -I $CONDA_PREFIX/include
-python setup.py -q install --prefix=$CONDA_PREFIX
+python setup.py -q build_ext -L $CONDA_ENV_PATH/lib -I $CONDA_ENV_PATH/include
+python setup.py -q install --prefix=$CONDA_ENV_PATH
 
 # clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
 theano-cache purge
