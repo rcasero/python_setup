@@ -56,7 +56,7 @@ tput setaf 1; echo "** Build tools"; tput sgr0
 sudo apt install -y cmake
 
 # for DeepCell
-sudo apt install -y gcc-5 g++-5
+sudo apt install -y g++-5
 
 # python IDE
 sudo snap install pycharm-community --classic
@@ -82,7 +82,7 @@ conda install -y pip=8.1.2
 
 # install Keras 1
 conda install -y keras=1.1.1 theano=0.9.0
-conda install -y cudnn=5.1 pygpu=0.6.9
+conda install -y cudnn=5.1 pygpu=0.6
 conda install -y mkl-service
 
 # install other python packages
