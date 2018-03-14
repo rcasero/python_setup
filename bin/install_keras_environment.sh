@@ -89,9 +89,9 @@ fi
 source activate $CONDA_ENV
 
 # check that the variable with the path to the local environment is set
-if [[ ! -v CONDA_ENV_PATH ]];
+if [[ ! -v CONDA_PREFIX ]];
 then
-    echo "Error! Variable CONDA_ENV_PATH not set in this local environment: $CONDA_ENV"
+    echo "Error! Variable CONDA_PREFIX not set in this local environment: $CONDA_ENV"
     exit 1
 fi
 
@@ -155,7 +155,28 @@ exit 0
 
 # install Tensorflow, Theano and keras latest version from source
 pip install nose-parameterized
-conda install -y scipy cudnn mkl-service pygpu
+conda install -y scipy Cython mkl-service 
 pip install pycuda scikit-cuda
+
+# install libgpuarray from source, with python bindings
+cd ~/Software
+if [ -d libgpuarray ]; then # previous version present
+    cd libgpuarray
+    git pull
+else # no previous version exists
+    git clone https://github.com/Theano/libgpuarray.git
+    cd libgpuarray
+    mkdir Build
+fi
+cd Build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_PREFIX
+make
+make install
+cd ..
+python setup.py -q build_ext -L $CONDA_PREFIX/lib -I $CONDA_PREFIX/include
+python setup.py -q install --prefix=$CONDA_PREFIX
+
+# clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
+theano-cache purge
 
 tput setaf 1; echo "** Exiting install_keras_environment.sh"; tput sgr0
