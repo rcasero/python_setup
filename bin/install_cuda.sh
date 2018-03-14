@@ -14,9 +14,9 @@
 #
 #      ubuntu_packages: (def) From Ubuntu official packages.
 #
-#      nvidia_ubuntu_16.04: From the Nvidia website, .deb packages for Ubuntu 16.04 (x86_64)
+#      nvidia_ubuntu_16.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 16.04 (x86_64).
 #
-#      nvidia_ubuntu_17.04: From the Nvidia website, .deb packages for Ubuntu 17.04 (x86_64),
+#      nvidia_ubuntu_17.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 17.04 (x86_64),
 #                           with Patch 1 (Released Jan 25, 2018)
 #
 #    Note: If you choose an Nvidia website installation, and the cuda
@@ -52,13 +52,14 @@ if [ "$CUDA_TYPE" ==  "ubuntu_packages" ]
 then
     
     # Option 1. CUDA Toolkit from the Ubuntu distribution packages
-    echo "** Remove Nvidia website packages, if present"
+    echo "** Remove Nvidia website packages, if present, as they take the same role as Ubuntu official packages"
     set +e
     sudo apt remove -y --purge cuda
     sudo apt autoremove -y
     set -e
     echo "** Install current Ubuntu official packages"
-    sudo apt install -y nvidia-cuda-dev nvidia-cuda-toolkit
+    # Note: My workstation with a GeForce GTX 1060 6GB graphics card doesn't boot with nvidia-387, but work with nvidia-384
+    sudo apt install -y nvidia-cuda-dev nvidia-cuda-toolkit nvidia-384
     exit 0
     
 elif [ "$CUDA_TYPE" ==  "nvidia_ubuntu_16.04" ]
