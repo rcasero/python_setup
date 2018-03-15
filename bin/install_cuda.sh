@@ -60,6 +60,11 @@ then
     echo "** Install current Ubuntu official packages"
     # Note: My workstation with a GeForce GTX 1060 6GB graphics card doesn't boot with nvidia-387, but work with nvidia-384
     sudo apt install -y nvidia-cuda-dev nvidia-cuda-toolkit nvidia-384
+
+    # output which version of CUDA has been installed
+    tput setaf 1; echo "** Installed CUDA version:"; tput sgr0
+    nvcc --version
+    
     exit 0
     
 elif [ "$CUDA_TYPE" ==  "nvidia_ubuntu_16.04" ]
@@ -167,3 +172,6 @@ then
     sudo dpkg -i cuda-repo-ubuntu1704-9-1-local-cublas-performance-update-1_1.0-1_amd64.deb
 fi
 
+# output which version of CUDA has been installed
+tput setaf 1; echo "** Installed CUDA version:"; tput sgr0
+nvcc --version
