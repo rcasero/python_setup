@@ -74,13 +74,30 @@ sudo snap install pycharm-community --classic
 ######################################################################
 ## python conda environment
 
+# select python version
+case "${BACKEND}"
+in
+    tensorflow)
+	PYTHON_VERSION=3.6
+	;;
+    
+    theano) 
+	PYTHON_VERSION=3.5
+	;;
+    
+    *)
+	echo "** Error: Backend no recognised"
+	exit 1
+	;;
+esac
+
 # if the environment doesn't exist, we create a new one. If it does,
 # we add the python packages to it
 
 # check whether the environment already exists
 if [ -z "$(conda info --envs | sed '/^#/ d' | cut -f1 -d ' ' | grep -w $CONDA_ENV)" ]; then
     tput setaf 1; echo "** Create conda local environment: $CONDA_ENV"; tput sgr0
-    conda create -y --name $CONDA_ENV python=3.6
+    conda create -y --name $CONDA_ENV python=$PYTHON_VERSION
 else
     tput setaf 1; echo "** Conda local environment already exists: $CONDA_ENV"; tput sgr0
 fi
@@ -119,8 +136,8 @@ in
 	# install Theano's latest version
 	pip install git+https://github.com/Theano/Theano.git --upgrade --no-deps
 
-	# install dependencies for libgpuarray that have python packages
-	conda install -y Cython numpy scipy>=0.14 mkl-service nose cudnn 
+	# install dependencies for theano
+	conda install -y Cython numpy<=1.12 scipy<0.17.1 mkl-service nose>=1.3.0 sphinx>=0.5.1 pygments pydot-ng cudnn 
 
 	# install libgpuarray from source, with python bindings
 	cd ~/Software
@@ -133,12 +150,12 @@ in
 	    mkdir Build
 	fi
 	cd Build
-	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_ENV_PATH
+	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_PREFIX
 	make
 	make install
 	cd ..
-	python setup.py -q build_ext -L $CONDA_ENV_PATH/lib -I $CONDA_ENV_PATH/include
-	python setup.py -q install --prefix=$CONDA_ENV_PATH
+	python setup.py -q build_ext -L $CONDA_PREFIX/lib -I $CONDA_PREFIX/include
+	python setup.py -q install --prefix=$CONDA_PREFIX
 	
 	# clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
 	theano-cache purge
