@@ -105,15 +105,19 @@ fi
 # switch to the local environment
 source activate $CONDA_ENV
 
-# check that the variable with the path to the local environment is set
+# check that the variable with the path to the local environment is
+# set. Note that different versions of conda use different variable
+# names for the path
 if [[ ! -v CONDA_PREFIX ]];
 then
-    echo "Error! Variable CONDA_PREFIX not set in this local environment: $CONDA_ENV"
-    exit 1
+    if [[ ! -v CONDA_ENV_PATH ]];
+    then
+	echo "Error! Neither CONDA_PREFIX nor CONDA_ENV_PATH set in this local environment: $CONDA_ENV"
+	exit 1
+    else
+	CONDA_PREFIX="$CONDA_ENV_PATH"
+    fi
 fi
-
-# install Keras
-pip install git+https://github.com/fchollet/keras.git --upgrade --no-deps
 
 ######################################################################
 ## DEPENDENCIES SPECIFIC TO EACH BACKEND
@@ -130,36 +134,19 @@ in
     theano) 
 	echo "** Dependencies for Theano backend"
 	
-	# fix bug: 'To use MKL 2018 with Theano you MUST set "MKL_THREADING_LAYER=GNU" in your environement.'
-	export MKL_THREADING_LAYER=GNU
-
-	# install Theano's latest version
-	pip install git+https://github.com/Theano/Theano.git --upgrade --no-deps
+	# install Theano's latest version (with dependencies: numpy, scipy, six)
+	pip install git+https://github.com/Theano/Theano.git --upgrade
 
 	# install dependencies for theano
-	conda install -y Cython numpy<=1.12 scipy<0.17.1 mkl-service nose>=1.3.0 sphinx>=0.5.1 pygments pydot-ng cudnn 
-
-	# install libgpuarray from source, with python bindings
-	cd ~/Software
-	if [ -d libgpuarray ]; then # previous version present
-	    cd libgpuarray
-	    git checkout tags/v0.7.5
-	else # no previous version exists
-	    git clone --branch v0.7.5 https://github.com/Theano/libgpuarray.git
-	    cd libgpuarray
-	    mkdir Build
-	fi
-	cd Build
-	cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_PREFIX
-	make
-	make install
-	cd ..
-	python setup.py -q build_ext -L $CONDA_PREFIX/lib -I $CONDA_PREFIX/include
-	python setup.py -q install --prefix=$CONDA_PREFIX
-	
-	# clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
-	theano-cache purge
-	
+	conda install -y -c mila-udem pygpu # libgpuarray, mako, markupsafe, mkl, numpy, pygpu, six
+	conda install -y 'nose>=1.3.0'      # to run Theano’s test-suite
+	conda install -y 'sphinx>=0.5.1'    # for building the documentation
+	conda install -y pygments           # for building the documentation
+	pip install pydot-ng                # to handle large picture for gif/images
+	pip install pycuda                  # for some extra operations on the GPU like fft and solvers
+	pip install git+https://github.com/lebedov/scikit-cuda.git#egg=scikit-cuda # for some extra operations on the GPU like fft and solvers
+	#conda install -y warp-ctc           # for Theano CTC implementation
+	conda install -y mkl-service        # BLAS installation (with Level 3 functionality)
 	;;
     
     *)
@@ -167,6 +154,16 @@ in
 	exit 1
 	;;
 esac
+
+	
+# install Keras
+pip install keras
+
+# install dependencies for Keras
+conda install -y cudnn              # to run Keras on GPU
+conda install -y h5py               # to save Keras models to disk
+conda install -y graphviz           # used by visualization utilities to plot model graphs
+pip install pydot                   # used by visualization utilities to plot model graphs
 
 exit 0
 
