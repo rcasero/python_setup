@@ -54,12 +54,12 @@ ${THIS_DIR}/install_miniconda.sh 3
 #
 #      ubuntu_packages: (def) From Ubuntu official packages.
 #
-#      nvidia_ubuntu_16.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 16.04 (x86_64).
+#      nvidia_9.1_ubuntu_16.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 16.04 (x86_64).
 #
-#      nvidia_ubuntu_17.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 17.04 (x86_64),
-#                           with Patch 1 (Released Jan 25, 2018)
+#      nvidia_9.1_ubuntu_17.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 17.04 (x86_64),
+#                               with Patch 1 (Released Jan 25, 2018)
 ${THIS_DIR}/install_cuda.sh ubuntu_packages
-#${THIS_DIR}/install_cuda.sh nvidia_ubuntu_17.04
+#${THIS_DIR}/install_cuda.sh nvidia_9.1_ubuntu_17.04
 
 ######################################################################
 
