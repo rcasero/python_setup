@@ -14,6 +14,8 @@
 #         VERSION=3). Miniconda will be installed in /opt,
 #         e.g. /opt/miniconda3 for version 3.
 
+#    Author: Ramon Casero <rcasero@gmail.com>
+#    Version: 1.0
 #    Copyright © 2018  Ramón Casero <rcasero@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
