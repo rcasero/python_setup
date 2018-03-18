@@ -21,14 +21,23 @@
 #
 #      nvidia_9.1_ubuntu_17.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 17.04 (x86_64),
 #                               with Patch 1 (Released Jan 25, 2018)
-#
-#    Note: If you choose an Nvidia website installation, and the cuda
-#      package is already installed, installation is skipped. To
-#      manually uninstall the previous version:
-#
-#      sudo apt remove -y --purge cuda
-#      sudo apt autoremove -y --purge
 
+#    Author: Ramon Casero <rcasero@gmail.com>
+#    Version: 1.0
+#    Copyright © 2018  Ramón Casero <rcasero@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #!/bin/bash
 
