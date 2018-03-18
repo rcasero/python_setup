@@ -18,6 +18,42 @@
 #
 #    -b tensorflow|theano:
 #       backend for keras (def. "tensorflow").
+#
+#    Prerequisites:
+#    ====================================================================
+#
+#    You need to have installed conda (for local conda environments and python
+#    package management) and CUDA (for access to your Nvidia GPU). We provide
+#    scripts for both in this repository.
+#
+#    To install conda with Miniconda v3, you can use
+#
+#        ./install_miniconda 3
+#
+#    To install the Nvidia drivers and CUDA, use e.g.
+#
+#        ./install_cuda.sh nvidia_9.0_ubuntu_17.04
+#
+#    The particular version depends on your system, the version of Ubuntu you have
+#    installed and your graphics card (e.g. my GeForce GTX 1050 Mobile doesn't work
+#    with the Nvidia drivers v387, so I cannot use CUDA 9.1, and need to use CUDA 9.0).
+
+#    Author: Ramon Casero <rcasero@gmail.com>
+#    Version: 1.0
+#    Copyright © 2018  Ramón Casero <rcasero@gmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #!/bin/bash
 
@@ -44,22 +80,6 @@ done
 
 # directory where this script lives
 THIS_DIR=`dirname $0`
-
-# install Miniconda 3
-${THIS_DIR}/install_miniconda.sh 3
-
-# install CUDA toolkit
-#
-#    Options:
-#
-#      ubuntu_packages: (def) From Ubuntu official packages.
-#
-#      nvidia_9.1_ubuntu_16.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 16.04 (x86_64).
-#
-#      nvidia_9.1_ubuntu_17.04: From the Nvidia website, CUDA 9.1 .deb packages for Ubuntu 17.04 (x86_64),
-#                               with Patch 1 (Released Jan 25, 2018)
-${THIS_DIR}/install_cuda.sh ubuntu_packages
-#${THIS_DIR}/install_cuda.sh nvidia_9.1_ubuntu_17.04
 
 ######################################################################
 
