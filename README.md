@@ -1,3 +1,16 @@
+Table of Contents
+=================
+
+   * [Summary]()
+   * [Creating an environment for Keras]()
+   * [Testing environments]()
+   * [Common errors]()
+      * [Cannot activate the conda environment]()
+      * [Theano cannot compile cudnn library]()
+      * [Theano cannot find cudnn library]()
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+
 # Summary
 
 **python_setup** are some scripts to install dependencies and set up conda environments, mostly for machine learning and image processing python projects.
