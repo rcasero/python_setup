@@ -20,7 +20,7 @@ $ source activate my_local_environment
 bash: activate: No such file or directory
 ```
 
-you may be missing a path like this in your `~/.bashrc`, that should have been added by `install_miniconda.sh`
+you may be missing a path like this in your `~/.bashrc`, that should have been added by `install_miniconda.sh` when you ran it
 
 ```
 # added by pysto/tools/install_miniconda.sh
