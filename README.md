@@ -18,11 +18,11 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 I use Ubuntu and bash, so the scripts may need some tweaking to work in other setups.
 
 List of scripts:
-* **build_SimpleElastix.sh:** This script downloads the SimpleElastix source code and and creates a conda local environment to build it. Afterwards, the user or another script can install SimpleElastix for python in another local environment.
-* **install_cuda.sh:** Install Nvidia drivers and CUDA Toolkit in Ubuntu.
-* **install_deepcell_environment.sh:** Install Ubuntu dependencies and create a DeepCell conda environment to run [DeepCell](https://github.com/CovertLab/DeepCell/) architectures using Keras 1/Theano.
-* **install_keras_environment.sh:** Install Ubuntu dependencies and create a conda environment for the master version of Keras.
 * **install_miniconda.sh:** Install Miniconda in Ubuntu to provide conda.
+* **install_cuda.sh:** Install Nvidia drivers and CUDA Toolkit in Ubuntu.
+* **install_keras_environment.sh:** Install Ubuntu dependencies and create a conda environment for the master version of Keras.
+* **build_SimpleElastix.sh:** This script downloads the [SimpleElastix source code](https://github.com/SuperElastix/SimpleElastix) and and creates a conda local environment to build it. Afterwards, the user or another script can install SimpleElastix for python in another local environment.
+* **install_deepcell_environment.sh:** Install Ubuntu dependencies and create a DeepCell conda environment to run [DeepCell](https://github.com/CovertLab/DeepCell/) architectures using Keras 1/Theano.
 
 # Creating an environment for Keras
 
@@ -33,7 +33,13 @@ cd ~/Software/python_setup/bin
 ./install_cuda.sh nvidia_9.0_ubuntu_17.04
 ```
 
-Then, create a Keras project in a conda environment. You need to choose which backend you want to use, `tensorflow` or `theano` ([Theano is being phased out](https://groups.google.com/d/msg/theano-users/7Poq8BZutbY/rNCIfvAEAwAJ))
+Then, you need to install conda globally in your machine (this only needs to be done once too), e.g. for Miniconda 3
+
+```
+./install_miniconda.sh 3
+```
+
+Then, create a conda environment for Keras projects. You need to choose which backend you want to use, `tensorflow` or `theano` ([Theano is being phased out](https://groups.google.com/d/msg/theano-users/7Poq8BZutbY/rNCIfvAEAwAJ))
 
 ```
 ./install_keras_environment.sh  -e my_environment -b theano
