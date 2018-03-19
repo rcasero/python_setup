@@ -1,56 +1,34 @@
 
-import os
+def test_keras_theano():
+    """
+    Minimalist import of Keras with Theano as backend
+    :return:
+    """
 
-os.environ['KERAS_BACKEND'] = 'theano'
+    import os
 
-# different versions of conda keep the path in different variables
-if 'CONDA_ENV_PATH' in os.environ:
-    conda_env_path = os.environ['CONDA_ENV_PATH']
-elif 'CONDA_PREFIX' in os.environ:
-    conda_env_path = os.environ['CONDA_PREFIX']
-else:
-    conda_env_path = '.'
+    os.environ['KERAS_BACKEND'] = 'theano'
 
-os.environ['MKL_THREADING_LAYER'] = 'GNU'
-os.environ['THEANO_FLAGS'] = 'floatX=float32,device=cuda0,dnn.enabled=False,' \
-                             + 'dnn.library_path=' + os.path.join(conda_env_path, 'lib') + ',' \
-                             + 'dnn.include_path=' + os.path.join(conda_env_path, 'include')
-if 'LD_LIBRARY_PATH' in os.environ:
-    os.environ['LD_LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib') + ':' \
-                                    + '/usr/lib/x86_64-linux-gnu:' \
-                                    + '/usr/lib/nvidia-384:' \
-                                    + os.environ['LD_LIBRARY_PATH']
-else:
-    os.environ['LD_LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib') + ':' \
-                                    + '/usr/lib/x86_64-linux-gnu:' \
-                                    + '/usr/lib/nvidia-384'
+    # different versions of conda keep the path in different variables
+    if 'CONDA_ENV_PATH' in os.environ:
+        conda_env_path = os.environ['CONDA_ENV_PATH']
+    elif 'CONDA_PREFIX' in os.environ:
+        conda_env_path = os.environ['CONDA_PREFIX']
+    else:
+        conda_env_path = '.'
 
-if 'LIBRARY_PATH' in os.environ:
-    os.environ['LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib') + ':' \
-                                 + '/usr/lib/x86_64-linux-gnu:' \
-                                 + '/usr/lib/nvidia-384:' \
-                                 + os.environ['LIBRARY_PATH']
-else:
-    os.environ['LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib') + ':' \
-                                 + '/usr/lib/x86_64-linux-gnu:' \
-                                 + '/usr/lib/nvidia-384'
+    # to avoid error "RuntimeError: Could not find cudnn library (looked for v5* to v7*). Check your cudnn installation."
+    if 'LIBRARY_PATH' in os.environ:
+        os.environ['LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib') + ':' \
+                                     + os.environ['LIBRARY_PATH']
+    else:
+        os.environ['LIBRARY_PATH'] = os.path.join(conda_env_path, 'lib')
 
-if 'CPATH' in os.environ:
-    os.environ['CPATH'] = os.path.join(conda_env_path, 'include') + ':' \
-                          + os.environ['CPATH']
-else:
-    os.environ['CPATH'] = os.path.join(conda_env_path, 'include')
+    # to tell Theano to use cuDNN, and where the include files and libraries required for compilation are
+    os.environ['THEANO_FLAGS'] = 'floatX=float32,device=cuda0,dnn.enabled=True,' \
+                                 + 'dnn.library_path=' + os.path.join(conda_env_path, 'lib') + ',' \
+                                 + 'dnn.include_path=' + os.path.join(conda_env_path, 'include')
 
-if 'PATH' in os.environ:
-    os.environ['PATH'] = '/usr/lib/nvidia-384:' \
-                          + os.environ['PATH']
-else:
-    os.environ['PATH'] = '/usr/lib/nvidia-384'
-
-os.environ['DEVICE'] = 'cuda0'
-#os.environ['GPUARRAY_FORCE_CUDA_DRIVER_LOAD'] = '1'
-#import pygpu
-#pygpu.test()
-
-import theano
+    import theano
+    import keras
 
