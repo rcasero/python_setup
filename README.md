@@ -26,6 +26,8 @@ List of scripts:
 
 # Creating an environment for Keras
 
+[Official instructions to install Keras](https://keras.io/#installation) are available from the Keras website. These here are some personal notes on how to install Keras in a particular way that works for me, using the scripts I provide in this project.
+
 First, you need to have installed NVIDIA drivers and CUDA globally in the machine, e.g. (this only needs to be done once per machine)
 
 ```
@@ -40,6 +42,23 @@ Then, you need to install conda globally in your machine (this only needs to be 
 ```
 
 Then, create a conda environment for Keras projects. You need to choose which backend you want to use, `tensorflow` or `theano` ([Theano is being phased out](https://groups.google.com/d/msg/theano-users/7Poq8BZutbY/rNCIfvAEAwAJ))
+
+## With TensorFlow as the backend
+
+```
+./install_keras_environment.sh  -e my_environment -b tensorflow
+```
+
+Afterwards, you can make a directory for the project, and activate the local environment (note that one local environment can be used for several projects)
+
+```
+cd ~/Software
+mkdir new_project
+cd new_project
+source activate my_environment
+```
+
+## With Theano as the backend
 
 ```
 ./install_keras_environment.sh  -e my_environment -b theano
@@ -61,6 +80,35 @@ Once you have created an environment with Keras, you can test it with `pytest`, 
 ```
 cd ~/Software/python_setup
 source activate my_environment
+```
+If the environment is for TensorFlow
+
+```
+pytest test/test_tensorflow_setup.py
+```
+
+and if everything is fine, you should get an output like this (the warning will disappear in future versions of `h5py`)
+
+```
+===================================== test session starts ======================================
+platform linux -- Python 3.6.2, pytest-3.4.2, py-1.5.2, pluggy-0.6.0
+rootdir: /home/rcasero/Software/python_setup, inifile:
+collected 1 item                                                                               
+
+test/test_tensorflow_setup.py .                                                          [100%]
+
+======================================= warnings summary =======================================
+test/test_tensorflow_setup.py::test_keras_tensorflow
+  /home/rcasero/.conda/envs/cytometer_tensorflow/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+    from ._conv import register_converters as _register_converters
+
+-- Docs: http://doc.pytest.org/en/latest/warnings.html
+============================= 1 passed, 1 warnings in 0.82 seconds =============================```
+```
+
+Or, if the backend is Theano,
+
+```
 pytest test/test_theano_setup.py
 ```
 
@@ -88,7 +136,7 @@ These errors apply to the following set up:
 * Python projects running in local [conda environments](https://conda.io/docs/user-guide/tasks/manage-environments.html)
   * Thus, python packages are installed to e.g. `~/.conda/envs/MY_CONDA_ENVIRONMENT/lib/python3.5/site-packages/`
 * Keras 2 installed with script `install_keras_environment.sh` provided in this project, in a conda environment
-  * Separate environments for Keras with Theano or Keras with Tensorflow
+  * Separate environments for Keras with Theano or Keras with TensorFlow
 * [Theano bleeding-edge installation](http://deeplearning.net/software/theano/install_ubuntu.html#bleeding-edge-installation-recommended)
 
 ## Cannot activate the conda environment
