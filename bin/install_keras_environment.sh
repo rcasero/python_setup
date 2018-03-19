@@ -185,4 +185,7 @@ conda install -y h5py               # to save Keras models to disk
 conda install -y graphviz           # used by visualization utilities to plot model graphs
 pip install pydot                   # used by visualization utilities to plot model graphs
 
+# for tests
+pip install pytest
+
 tput setaf 1; echo "** Exiting install_keras_environment.sh"; tput sgr0
