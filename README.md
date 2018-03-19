@@ -11,16 +11,33 @@ List of scripts:
 * **install_keras_environment.sh:** Install Ubuntu dependencies and create a conda environment for the master version of Keras.
 * **install_miniconda.sh:** Install Miniconda in Ubuntu to provide conda.
 
-# Testing environments
+# Creating an environment for Keras
 
-Once you have created an environment with Keras (using `install_keras_environment.sh`), e.g.
+First, you need to have installed NVIDIA drivers and CUDA globally in the machine, e.g. (this only needs to be done once per machine)
 
 ```
 cd ~/Software/python_setup/bin
-./install_keras_environment -e my_environment -b theano
+./install_cuda.sh nvidia_9.0_ubuntu_17.04
 ```
 
-you can test it with `pytest`, e.g.
+Then, create a Keras project in a conda environment. You need to choose which backend you want to use, `tensorflow` or `theano` ([Theano is being phased out](https://groups.google.com/d/msg/theano-users/7Poq8BZutbY/rNCIfvAEAwAJ))
+
+```
+./install_keras_environment.sh  -e my_environment -b theano
+```
+
+Afterwards, you can make a directory for the project, and activate the local environment (note that one local environment can be used for several projects)
+
+```
+cd ~/Software
+mkdir new_project
+cd new_project
+source activate my_environment
+```
+
+# Testing environments
+
+Once you have created an environment with Keras, you can test it with `pytest`, e.g.
 
 ```
 cd ~/Software/python_setup
@@ -40,7 +57,6 @@ test/test_theano_setup.py .                                                     
 
 =================================== 1 passed in 1.95 seconds ===================================
 ```
-
 
 # Common errors
 
