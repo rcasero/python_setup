@@ -151,7 +151,7 @@ else
     set +e
     sudo apt remove --purge -y cuda
     sudo apt autoremove -y
-    sudo apt remove --purge cuda-repo-*
+    sudo apt -y remove --purge cuda-repo-*
     set -e
     export CUDA_PACKAGE_INSTALLED_VERSION=""
     
