@@ -1,8 +1,11 @@
 Table of Contents
 =================
 
+   * [Table of Contents]()
    * [Summary]()
    * [Creating an environment for Keras]()
+      * [With TensorFlow as the backend]()
+      * [With Theano as the backend]()
    * [Testing environments]()
    * [Common errors]()
       * [Cannot activate the conda environment]()
