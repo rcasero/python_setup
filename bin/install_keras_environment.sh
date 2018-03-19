@@ -185,32 +185,4 @@ conda install -y h5py               # to save Keras models to disk
 conda install -y graphviz           # used by visualization utilities to plot model graphs
 pip install pydot                   # used by visualization utilities to plot model graphs
 
-exit 0
-
-# install Tensorflow, Theano and keras latest version from source
-pip install nose-parameterized
-conda install -y scipy Cython mkl-service 
-pip install pycuda scikit-cuda
-
-# install libgpuarray from source, with python bindings
-cd ~/Software
-if [ -d libgpuarray ]; then # previous version present
-    cd libgpuarray
-    git pull
-else # no previous version exists
-    git clone https://github.com/Theano/libgpuarray.git
-    cd libgpuarray
-    mkdir Build
-fi
-cd Build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$CONDA_PREFIX
-make
-make install
-cd ..
-python setup.py -q build_ext -L $CONDA_PREFIX/lib -I $CONDA_PREFIX/include
-python setup.py -q install --prefix=$CONDA_PREFIX
-
-# clear Theano cache. Previous runs of Keras may cause CUDA compilation/version compatibility problems
-theano-cache purge
-
 tput setaf 1; echo "** Exiting install_keras_environment.sh"; tput sgr0
