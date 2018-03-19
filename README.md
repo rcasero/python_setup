@@ -39,7 +39,7 @@ you may be missing a path like this in your `~/.bashrc`, that should have been a
 export PATH=/opt/miniconda3/bin:"$PATH"
 ```
 
-# Theano cannot compile cudnn library
+## Theano cannot compile cudnn library
 
 If you are trying to import theano with cuDNN in python, e.g.
 
