@@ -8,7 +8,7 @@
 #    Syntax:
 #    ====================================================================
 #
-#    ./install_cuda.sh [ubuntu_packages | nvidia_9.1_ubuntu_16.04 | nvidia_9.1_ubuntu_17.04]
+#    ./install_cuda.sh [ubuntu_packages | nvidia_9.0_ubuntu_17.04 | nvidia_9.1_ubuntu_16.04 | nvidia_9.1_ubuntu_17.04]
 #
 #    Options:
 #
