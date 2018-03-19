@@ -8,3 +8,21 @@ I use Ubuntu, so the scripts may need some tweaking to work in other distributio
 * **install_deepcell_environment.sh:** Install Ubuntu dependencies and create a DeepCell conda environment to run [DeepCell](https://github.com/CovertLab/DeepCell/) architectures using Keras 1/Theano.
 * **install_keras_environment.sh:** Install Ubuntu dependencies and create a conda environment for the master version of Keras.
 * **install_miniconda.sh:** Install Miniconda in Ubuntu to provide conda.
+
+# Common errors
+
+## `bash: activate: No such file or directory`
+
+If you are trying to activate a conda environment and get the error
+
+```
+$ source activate my_local_environment
+bash: activate: No such file or directory
+```
+
+you may be missing a path like this in your `~/.bashrc`, that should have been added by `install_miniconda.sh`
+
+```
+# added by pysto/tools/install_miniconda.sh
+export PATH=/opt/miniconda3/bin:"$PATH"
+```
