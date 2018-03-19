@@ -1,13 +1,46 @@
-# python_setup
-Scripts to install dependencies and set up python environments (mostly for machine learning and image processing).
+# Summary
 
-I use Ubuntu, so the scripts may need some tweaking to work in other distributions.
+**python_setup** are some scripts to install dependencies and set up conda environments, mostly for machine learning and image processing python projects.
 
+I use Ubuntu and bash, so the scripts may need some tweaking to work in other setups.
+
+List of scripts:
 * **build_SimpleElastix.sh:** This script downloads the SimpleElastix source code and and creates a conda local environment to build it. Afterwards, the user or another script can install SimpleElastix for python in another local environment.
-* **install_cuda.sh:** Install Nvidia CUDA Toolkit in Ubuntu.
+* **install_cuda.sh:** Install Nvidia drivers and CUDA Toolkit in Ubuntu.
 * **install_deepcell_environment.sh:** Install Ubuntu dependencies and create a DeepCell conda environment to run [DeepCell](https://github.com/CovertLab/DeepCell/) architectures using Keras 1/Theano.
 * **install_keras_environment.sh:** Install Ubuntu dependencies and create a conda environment for the master version of Keras.
 * **install_miniconda.sh:** Install Miniconda in Ubuntu to provide conda.
+
+# Testing environments
+
+Once you have created an environment with Keras (using `install_keras_environment.sh`), e.g.
+
+```
+cd ~/Software/python_setup/bin
+./install_keras_environment -e my_environment -b theano
+```
+
+you can test it with `pytest`, e.g.
+
+```
+cd ~/Software/python_setup
+source activate my_environment
+pytest test/test_theano_setup.py
+```
+
+and if everything is fine, you should get an output like this
+
+```
+===================================== test session starts ======================================
+platform linux -- Python 3.5.4, pytest-3.4.2, py-1.5.2, pluggy-0.6.0
+rootdir: /home/rcasero/Software/python_setup, inifile:
+collected 1 item                                                                               
+
+test/test_theano_setup.py .                                                              [100%]
+
+=================================== 1 passed in 1.95 seconds ===================================
+```
+
 
 # Common errors
 
