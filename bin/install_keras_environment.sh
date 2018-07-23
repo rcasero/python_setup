@@ -183,6 +183,7 @@ pip install keras
 conda install -y cudnn              # to run Keras on GPU
 conda install -y h5py               # to save Keras models to disk
 conda install -y graphviz           # used by visualization utilities to plot model graphs
+pip install cython                  # dependency of mkl-random/mkl-fft via pydot
 pip install pydot                   # used by visualization utilities to plot model graphs
 
 # for tests
