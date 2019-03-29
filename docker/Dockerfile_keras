@@ -1,0 +1,72 @@
+FROM nvidia/cuda:10.0-devel-ubuntu18.04
+
+################################################################################################
+## variables to be edited by the user
+ARG USERNAME=rcasero
+
+################################################################################################
+## root space
+
+USER root
+ 
+RUN apt-get update
+RUN apt-get -y install curl
+RUN apt-get -y install python3
+ 
+WORKDIR /root
+ 
+RUN curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+RUN bash Anaconda3-5.2.0-Linux-x86_64.sh -b -p /opt/anaconda3
+ 
+ENV PATH="/opt/anaconda3/bin:${PATH}"
+RUN conda update -n base conda
+
+RUN which conda
+RUN ls -lh /opt/
+
+# build tools
+RUN apt install -y cmake
+
+# create user
+RUN useradd -ms /bin/bash $USERNAME
+
+################################################################################################
+## user space
+
+# change from root to user, and change directory to user's home directory
+# Note: setting HOME with ENV is a hack. We are force-setting the system's HOME variable. It needs to be
+# done this way, because ENV variables get substituted before the build, but HOME doesn't get assigned
+# until after the build has started.
+# before the build, but HOME
+USER $USERNAME
+ENV HOME /home/$USERNAME
+WORKDIR $HOME
+SHELL ["/bin/bash", "-c"]
+
+# create a conda local environment for the user
+# Note: ARG is for build time variables only
+ARG PYTHON_VERSION=3.6
+ARG CONDA_ENV=keras
+RUN conda create -y --name $CONDA_ENV python=$PYTHON_VERSION
+
+# set path to the conda local environment. In a normal system, this is set when you do "source activate", but not in
+# docker
+ENV CONDA_PREFIX $HOME/.conda/envs/$CONDA_ENV
+RUN echo CONDA_PREFIX: $CONDA_PREFIX
+
+# install keras and dependencies
+# distributed 1.21.8 requires msgpack
+RUN source activate $CONDA_ENV \
+    && pip install keras tensorflow-gpu pyyaml msgpack \
+    && conda install -y cudnn              # to run Keras on GPU \
+    && conda install -y h5py               # to save Keras models to disk \
+    && conda install -y graphviz           # used by visualization utilities to plot model graphs \
+    && pip install cython                  # dependency of mkl-random/mkl-fft via pydot \
+    && pip install pydot                   # used by visualization utilities to plot model graphs \
+    && pip install pytest                  # for tests
+
+# show the user the name of the environment and packages installed
+RUN source activate $CONDA_ENV \
+    && conda info --envs \
+    && conda list
+    
