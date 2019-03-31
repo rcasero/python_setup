@@ -1,3 +1,11 @@
+# To build:
+#
+#    docker build -f Dockerfile.keras -t rcasero_keras .
+#
+# To run:
+#
+#    docker run --runtime=nvidia -i -t rcasero_keras /bin/bash
+
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
 ################################################################################################
@@ -8,12 +16,11 @@ ARG USERNAME=rcasero
 ## root space
 
 USER root
+WORKDIR /root
  
 RUN apt-get update
 RUN apt-get -y install curl
 RUN apt-get -y install python3
- 
-WORKDIR /root
  
 RUN curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 RUN bash Anaconda3-5.2.0-Linux-x86_64.sh -b -p /opt/anaconda3
