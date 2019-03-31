@@ -1,0 +1,65 @@
+# To build:
+#
+#    docker build -f Dockerfile.cytometer_tensorflow -t rcasero_cytometer_tensorflow .
+#
+# To run:
+#
+#    docker run --runtime=nvidia -i -t rcasero_cytometer_tensorflow /bin/bash
+
+FROM rcasero_keras
+
+################################################################################################
+## variables to be edited by the user
+ARG USERNAME=rcasero
+
+################################################################################################
+## root space
+
+USER root
+WORKDIR /root
+
+# "apt install tzdata" asks for user interaction to configure time zone, so we need to do this
+# to make it non-interactive
+#
+# Solution derived from https://stackoverflow.com/questions/8671308/non-interactive-method-for-dpkg-reconfigure-tzdata
+RUN echo "tzdata tzdata/Areas select Europe" > /tmp/preseed.txt
+RUN echo "tzdata tzdata/Zones/Europe select London" >> /tmp/preseed.txt
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+    && debconf-set-selections /tmp/preseed.txt \
+    && apt install tzdata
+
+# install OpenSlide library
+RUN apt install -y openslide-tools
+
+# install LaTeX dependencies for matplotlib
+RUN apt install -y texlive-latex-base texlive-latex-extra
+RUN apt install -y dvipng
+
+# install GNU R with lme4 module (generilised linear mixed models)
+RUN apt install -y r-base r-cran-lme4
+
+################################################################################################
+## user space
+
+# change from root to user, and change directory to user's home directory
+# Note: setting HOME with ENV is a hack. We are force-setting the system's HOME variable. It needs to be
+# done this way, because ENV variables get substituted before the build, but HOME doesn't get assigned
+# until after the build has started.
+# before the build, but HOME
+USER $USERNAME
+ENV HOME /home/$USERNAME
+WORKDIR $HOME
+SHELL ["/bin/bash", "-c"]
+
+# copy keras environment to use as baseline for cytometer environment
+RUN conda create --name cytometer_tensorflow --clone keras
+
+# add packages specific for cytometer
+RUN source activate cytometer_tensorflow \
+    && conda install -y matplotlib pillow \
+    && conda install -y scikit-image scikit-learn h5py \ 
+    && conda install -y nose pytest \
+    && pip install opencv-python pysto openslide-python \
+    && pip install tifffile mahotas networkx \
+    && conda install -y pandas
+
