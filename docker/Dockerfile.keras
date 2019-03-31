@@ -5,6 +5,10 @@
 # To run:
 #
 #    docker run --runtime=nvidia -i -t rcasero_keras /bin/bash
+#
+# This will build a container with a sudo user $USERNAME (see below), and temporary password
+# $USERNAME. The first time the user is prompted for their password, s/he will be asked to
+# change it.
 
 FROM nvidia/cuda:10.0-devel-ubuntu18.04
 
@@ -19,8 +23,7 @@ USER root
 WORKDIR /root
  
 RUN apt-get update
-RUN apt-get -y install curl
-RUN apt-get -y install python3
+RUN apt-get -y install curl python3 ssh sudo
  
 RUN curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 RUN bash Anaconda3-5.2.0-Linux-x86_64.sh -b -p /opt/anaconda3
@@ -34,8 +37,15 @@ RUN ls -lh /opt/
 # build tools
 RUN apt install -y cmake
 
-# create user
+# create user, add to sudo group
 RUN useradd -ms /bin/bash $USERNAME
+RUN adduser $USERNAME sudo
+
+# this sets the username's password equal to the username (e.g. username rcasero, password rcasero).
+# Then, it makes the password expired, so that the first time the user tries to e.g. use sudo,
+# the user will have to 
+RUN echo $USERNAME:$USERNAME | chpasswd
+RUN passwd -e $USERNAME
 
 ################################################################################################
 ## user space
