@@ -5,6 +5,10 @@
 # To run:
 #
 #    docker run --runtime=nvidia -i -t rcasero_cytometer_tensorflow /bin/bash
+#
+# This builds a container that inherits a sudo user $USERNAME (see below), and temporary password
+# $USERNAME. The first time the user is prompted for their password, s/he will be asked to
+# change it.
 
 FROM rcasero_keras
 
@@ -26,7 +30,7 @@ RUN echo "tzdata tzdata/Areas select Europe" > /tmp/preseed.txt
 RUN echo "tzdata tzdata/Zones/Europe select London" >> /tmp/preseed.txt
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && debconf-set-selections /tmp/preseed.txt \
-    && apt install tzdata
+    && apt install -y tzdata
 
 # install OpenSlide library
 RUN apt install -y openslide-tools
