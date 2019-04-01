@@ -23,7 +23,7 @@ USER root
 WORKDIR /root
  
 RUN apt-get update
-RUN apt-get -y install curl python3 ssh sudo
+RUN apt-get -y install curl python3 ssh sudo less emacs
  
 RUN curl -O https://repo.anaconda.com/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 RUN bash Anaconda3-5.2.0-Linux-x86_64.sh -b -p /opt/anaconda3
@@ -37,6 +37,20 @@ RUN ls -lh /opt/
 # build tools
 RUN apt install -y cmake
 
+# manually provide options for keyboard-configuration, so that the install doesn't go into
+# interactive mode.
+#
+# Note: You can see which options need to be set with
+# "debconf-get-selections | grep keyboard-configuration"
+RUN echo "keyboard-configuration keyboard-configuration/layout select English (UK)" > /tmp/preseed.txt
+RUN echo "keyboard-configuration keyboard-configuration/variant select English (UK)" >> /tmp/preseed.txt
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+    && debconf-set-selections /tmp/preseed.txt \
+    && apt install -y keyboard-configuration
+
+# install X server so that we can make plots with matplotlib.
+RUN apt install -y xbase-clients
+
 # create user, add to sudo group
 RUN useradd -ms /bin/bash $USERNAME
 RUN adduser $USERNAME sudo
@@ -46,6 +60,10 @@ RUN adduser $USERNAME sudo
 # the user will have to 
 RUN echo $USERNAME:$USERNAME | chpasswd
 RUN passwd -e $USERNAME
+
+# enable ssh access for the user
+RUN echo "AllowUsers $USERNAME" >> /etc/ssh/sshd_config
+RUN systemctl enable ssh.service
 
 ################################################################################################
 ## user space
@@ -86,4 +104,6 @@ RUN source activate $CONDA_ENV \
 RUN source activate $CONDA_ENV \
     && conda info --envs \
     && conda list
-    
+
+# we need to manually launch the ssh service as root. This will also trigger the change of the user password
+ENTRYPOINT sudo service ssh start && bash
