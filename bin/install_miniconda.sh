@@ -37,7 +37,7 @@
 set -e
 
 # assign default input argument
-if [ "$#" -eq 0 ]
+if [[ "$#" -eq 0 ]]
 then
     # default input value
     VERSION=3
@@ -46,7 +46,7 @@ else
     VERSION="$1"
 fi
 
-if [ -d "/opt/miniconda${VERSION}" ];
+if [[ -d "${HOME}/Software/miniconda${VERSION}" ]];
 then
     /usr/bin/tput setaf 1; echo "** Conda ${VERSION} package manager already installed"; /usr/bin/tput sgr0
 else
@@ -54,7 +54,7 @@ else
     mkdir -p ~/Dowloads
     pushd ~/Downloads
     # download installer
-    if [ ! -e "Miniconda${VERSION}-latest-Linux-x86_64.sh" ];
+    if [[ ! -e "Miniconda${VERSION}-latest-Linux-x86_64.sh" ]];
     then
 	wget https://repo.continuum.io/miniconda/Miniconda${VERSION}-latest-Linux-x86_64.sh
     fi
@@ -64,7 +64,7 @@ else
     set +e
     isInBashrc=`grep  -c "export PATH="${HOME}"/Software/miniconda${VERSION}/bin" ~/.bashrc`
     set -e
-    if [ "$isInBashrc" -eq 0 ];
+    if [[ "$isInBashrc" -eq 0 ]];
     then
 	echo "Adding ${HOME}/Software/miniconda${VERSION}/bin to PATH in ~/.bashrc"
 	echo "
