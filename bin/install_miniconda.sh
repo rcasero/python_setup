@@ -11,8 +11,8 @@
 #    ./install_miniconda.sh [VERSION]
 #
 #         Install Miniconda. VERSION is the version number (def
-#         VERSION=3). Miniconda will be installed in /opt,
-#         e.g. /opt/miniconda3 for version 3.
+#         VERSION=3). Miniconda will be installed in ~/Software/miniconda-${VERSION},
+#         e.g. ~/Software/miniconda3 for version 3.
 
 #    Author: Ramon Casero <rcasero@gmail.com>
 #    Version: 1.0
@@ -60,19 +60,19 @@ else
     fi
     # install conda
     chmod u+x Miniconda${VERSION}-latest-Linux-x86_64.sh
-    sudo ./Miniconda${VERSION}-latest-Linux-x86_64.sh -b -p /opt/miniconda${VERSION}
+    ./Miniconda${VERSION}-latest-Linux-x86_64.sh -b -p "$HOME"/Software/miniconda${VERSION}
     set +e
-    isInBashrc=`grep  -c "export PATH=/opt/miniconda${VERSION}/bin" ~/.bashrc`
+    isInBashrc=`grep  -c "export PATH="${HOME}"/Software/miniconda${VERSION}/bin" ~/.bashrc`
     set -e
     if [ "$isInBashrc" -eq 0 ];
     then
-	echo "Adding /opt/miniconda${VERSION}/bin to PATH in ~/.bashrc"
+	echo "Adding ${HOME}/Software/miniconda${VERSION}/bin to PATH in ~/.bashrc"
 	echo "
 # added by pysto/tools/install_miniconda.sh
-export PATH=/opt/miniconda${VERSION}/bin:\"\$PATH\"" >> ~/.bashrc
+export PATH=${HOME}/Software/miniconda${VERSION}/bin:\"\$PATH\"" >> ~/.bashrc
 	source ~/.bashrc
     else
-	echo "/opt/miniconda${VERSION}/bin already in PATH in ~/.bashrc"
+	echo "${HOME}/Software/miniconda${VERSION}/bin already in PATH in ~/.bashrc"
     fi
     popd
 fi
