@@ -62,7 +62,7 @@ else
     chmod u+x Miniconda${VERSION}-latest-Linux-x86_64.sh
     ./Miniconda${VERSION}-latest-Linux-x86_64.sh -b -p "$HOME"/Software/miniconda${VERSION}
     set +e
-    isInBashrc=`grep  -c "export PATH="${HOME}"/Software/miniconda${VERSION}/bin" ~/.bashrc`
+    isInBashrc=`grep  -c "export PATH=${HOME}/Software/miniconda${VERSION}/bin" ~/.bashrc`
     set -e
     if [[ "$isInBashrc" -eq 0 ]];
     then
