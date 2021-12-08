@@ -1,3 +1,5 @@
+**Note: This project is deprecated. Just kept here as a historical record.**
+
 Table of Contents
 =================
 
